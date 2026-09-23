@@ -1,0 +1,81 @@
+{
+  "name": "base64-preview",
+  "displayName": "Base64 Preview",
+  "description": "A clear, readable view of Base64 content: text, JSON, images and files.",
+  "version": "1.0.0",
+  "publisher": "beatahumeniuk",
+  "license": "MIT",
+  "author": {
+    "name": "Beata Humeniuk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Beata-Humeniuk/base64-preview.git"
+  },
+  "homepage": "https://github.com/Beata-Humeniuk/base64-preview#readme",
+  "bugs": {
+    "url": "https://github.com/Beata-Humeniuk/base64-preview/issues"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "icon": "media/icon.png",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "base64",
+    "decode",
+    "preview",
+    "data uri",
+    "image",
+    "file",
+    "hex",
+    "offline",
+    "local",
+    "privacy"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "base64Preview.open",
+        "title": "Open Preview",
+        "category": "Base64"
+      },
+      {
+        "command": "base64Preview.decodeSelection",
+        "title": "Decode Selection",
+        "category": "Base64"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "base64Preview.decodeSelection",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "test": "tsc -p tsconfig.test.json && node --test out-test/test/*.test.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "3.9.2",
+    "typescript": "^5.3.0"
+  }
+}

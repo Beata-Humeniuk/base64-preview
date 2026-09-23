@@ -1,0 +1,15 @@
+.git/**
+.github/**
+.claude/**
+.vscode/**
+src/**
+test/**
+out-test/**
+coverage/**
+node_modules/**
+*.vsix
+**/*.map
+tsconfig.json
+tsconfig.test.json
+.gitignore
+SECURITY.md
