@@ -79,7 +79,27 @@ test('empty and whitespace-only input is reported as empty', () => {
   assert.equal(normalizeBase64('""').kind, 'empty');
 });
 
-test('invalid characters, mid-text padding, mixed alphabets and bad lengths are reported', () => {
+test('mixed alphabets decode anyway and are flagged', () => {
+  const standard = Buffer.from([0xfb, 0xff, 0xbf, 0xfe, 0xfb, 0xef]).toString('base64');
+  assert.ok(standard.includes('+') || standard.includes('/'));
+  const mixed = standard.slice(0, 4) + standard.slice(4).replace(/\+/g, '-').replace(/\//g, '_');
+  assert.notEqual(mixed, standard);
+  const normalized = normalizeBase64(mixed);
+  assert.equal(normalized.kind, 'ok');
+  if (normalized.kind === 'ok') {
+    assert.equal(normalized.mixedAlphabets, true);
+    assert.equal(normalized.urlSafe, true);
+    assert.equal(normalized.base64, standard);
+  }
+  const plain = normalizeBase64(standard);
+  assert.equal(plain.kind, 'ok');
+  if (plain.kind === 'ok') {
+    assert.equal(plain.mixedAlphabets, false);
+    assert.equal(plain.urlSafe, false);
+  }
+});
+
+test('invalid characters, mid-text padding and bad lengths are reported', () => {
   const bad = normalizeBase64('aGVs*bG8=');
   assert.equal(bad.kind, 'invalid');
   if (bad.kind === 'invalid') { assert.match(bad.message, /"\*"/); }
@@ -87,10 +107,6 @@ test('invalid characters, mid-text padding, mixed alphabets and bad lengths are 
   const padding = normalizeBase64('aGVs=bG8=');
   assert.equal(padding.kind, 'invalid');
   if (padding.kind === 'invalid') { assert.match(padding.message, /Padding/); }
-
-  const mixed = normalizeBase64('ab+c_d==');
-  assert.equal(mixed.kind, 'invalid');
-  if (mixed.kind === 'invalid') { assert.match(mixed.message, /alphabets/); }
 
   const length = normalizeBase64('aGVsbG8xx');
   assert.equal(length.kind, 'invalid');

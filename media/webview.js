@@ -7,6 +7,7 @@ const sizeEl = document.getElementById('size');
 const dimsEl = document.getElementById('dims');
 const encodingEl = document.getElementById('encoding');
 const alphabetEl = document.getElementById('alphabet');
+const mixedEl = document.getElementById('mixed');
 const dataUriEl = document.getElementById('datauri');
 const declaredEl = document.getElementById('declared');
 const viewBar = document.getElementById('viewbar');
@@ -63,7 +64,8 @@ function renderSummary(normalized, bytes, info) {
   sizeEl.textContent = formatSize(bytes.length) + (bytes.length >= 1024 ? ' (' + bytes.length.toLocaleString('en-US') + ' bytes)' : '');
   setPill(dimsEl, '');
   setPill(encodingEl, info.encoding && info.encoding !== 'utf-8' ? info.encoding.toUpperCase() : '');
-  alphabetEl.classList.toggle('hidden', !normalized.urlSafe);
+  alphabetEl.classList.toggle('hidden', !normalized.urlSafe || normalized.mixedAlphabets);
+  mixedEl.classList.toggle('hidden', !normalized.mixedAlphabets);
   dataUriEl.classList.toggle('hidden', !normalized.fromDataUri);
   const mismatch = info.declaredMime && info.declaredMime !== info.mime && info.declaredMime !== 'application/octet-stream';
   setPill(declaredEl, mismatch ? 'declared as ' + info.declaredMime : '');
