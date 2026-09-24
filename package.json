@@ -2,7 +2,7 @@
   "name": "base64-preview",
   "displayName": "Base64 Preview",
   "description": "A clear, readable view of Base64 content: text, JSON, images and files.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "publisher": "beatahumeniuk",
   "license": "MIT",
   "author": {

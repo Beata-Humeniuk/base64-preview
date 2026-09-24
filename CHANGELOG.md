@@ -4,6 +4,15 @@ All notable, user-visible changes to Base64 Preview are documented in this file.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] - 2026-09-24
+
+### Fixed
+
+- Text that mixes the standard (`+` `/`) and URL-safe (`-` `_`) Base64
+  alphabets is now decoded instead of rejected: `-` and `_` are read as `+`
+  and `/`, and the panel shows a "mixed Base64 alphabets" warning so the
+  result can be double-checked.
+
 ## [1.0.0] - 2026-09-23
 
 ### Added

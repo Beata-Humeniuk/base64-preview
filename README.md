@@ -24,7 +24,8 @@ Decoding and file-type detection run entirely on your machine. See
 - Picks up Base64 straight from the clipboard or the editor selection.
 - Accepts bare Base64, `data:` URIs, the URL-safe alphabet, line-wrapped
   text, quoted strings and missing padding — and explains what is wrong when
-  the text is not Base64 at all.
+  the text is not Base64 at all. Text that mixes both alphabets is decoded
+  with a warning rather than rejected.
 - Recognises what the bytes are from their signature: PNG, JPEG, GIF, WebP,
   SVG, BMP, ICO, AVIF, PDF, ZIP, DOCX, XLSX, PPTX, JAR, GZIP, 7z, RAR, TAR, MP3,
   WAV, OGG, FLAC, MP4, WebM, WOFF, TTF, OTF, SQLite, WebAssembly and more —

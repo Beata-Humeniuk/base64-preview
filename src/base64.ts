@@ -1,7 +1,7 @@
 export type NormalizedBase64 =
   | { kind: 'empty' }
   | { kind: 'invalid'; message: string }
-  | { kind: 'ok'; base64: string; mimeHint?: string; urlSafe: boolean; fromDataUri: boolean };
+  | { kind: 'ok'; base64: string; mimeHint?: string; urlSafe: boolean; mixedAlphabets: boolean; fromDataUri: boolean };
 
 /**
  * Turns whatever the user pasted into canonical, padded, standard-alphabet Base64.
@@ -40,10 +40,10 @@ export function normalizeBase64(raw: string): NormalizedBase64 {
       : { kind: 'empty' };
   }
 
+  // Mixing the two alphabets is not valid Base64, but decoding it anyway (treating
+  // "-" as "+" and "_" as "/") is far more useful than refusing; the panel flags it.
   const urlSafe = /[-_]/.test(text);
-  if (urlSafe && /[+/]/.test(text)) {
-    return { kind: 'invalid', message: 'The text mixes the standard (+ /) and URL-safe (- _) Base64 alphabets.' };
-  }
+  const mixedAlphabets = urlSafe && /[+/]/.test(text);
   let s = urlSafe ? text.replace(/-/g, '+').replace(/_/g, '/') : text;
   s = s.replace(/=+$/, '');
 
@@ -58,7 +58,7 @@ export function normalizeBase64(raw: string): NormalizedBase64 {
   }
   while (s.length % 4) { s += '='; }
 
-  return { kind: 'ok', base64: s, mimeHint, urlSafe, fromDataUri };
+  return { kind: 'ok', base64: s, mimeHint, urlSafe, mixedAlphabets, fromDataUri };
 }
 
 /** Decodes canonical Base64 (as produced by normalizeBase64) into raw bytes. */
